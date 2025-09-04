@@ -13,7 +13,7 @@ export default function Home() {
   const [timeframe, setTimeframe] = useState<'1-minggu' | '1-tahun'>('1-minggu')
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-red-50 to-white">
+    <main className="min-h-screen bg-gradient-to-br from-red-50 to-white pb-20 md:pb-0">
       <Navigation />
       <HeroSection />
       <div className="container mx-auto px-4 py-8">

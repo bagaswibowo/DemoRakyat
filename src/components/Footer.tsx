@@ -1,3 +1,5 @@
+import { Facebook, Twitter, Instagram, MessageCircle, Send } from 'lucide-react'
+
 export function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-12">
@@ -88,22 +90,27 @@ export function Footer() {
 
         {/* Share Section */}
         <div className="text-center mb-8">
-          <h3 className="text-xl font-bold mb-4">Share via:</h3>
-          <div className="flex justify-center space-x-4">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
-              📘 Facebook
+          <h3 className="text-xl font-bold mb-4">Bagikan:</h3>
+          <div className="flex justify-center space-x-2 md:space-x-4">
+            <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              <Facebook className="w-4 h-4" />
+              <span className="hidden md:inline">Facebook</span>
             </button>
-            <button className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors text-sm">
-              🐦 Twitter
+            <button className="flex items-center gap-2 bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors text-sm">
+              <Twitter className="w-4 h-4" />
+              <span className="hidden md:inline">Twitter</span>
             </button>
-            <button className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition-colors text-sm">
-              📷 Instagram
+            <button className="flex items-center gap-2 bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition-colors text-sm">
+              <Instagram className="w-4 h-4" />
+              <span className="hidden md:inline">Instagram</span>
             </button>
-            <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
-              💬 WhatsApp
+            <button className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
+              <MessageCircle className="w-4 h-4" />
+              <span className="hidden md:inline">WhatsApp</span>
             </button>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm">
-              ✈️ Telegram
+            <button className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm">
+              <Send className="w-4 h-4" />
+              <span className="hidden md:inline">Telegram</span>
             </button>
           </div>
         </div>

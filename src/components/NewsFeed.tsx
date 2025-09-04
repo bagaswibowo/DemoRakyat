@@ -3,7 +3,16 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ClientOnly } from './ClientOnly'
 import { NewsArticle } from '@/types'
-import { formatDate, truncateText, API_ENDPOINTS, REFRESH_INTERVALS } from '@/utils'
+import { formatDate, truncateText, API_ENDPOINTS, REFRESH_INTERVALS } from '@/lib'
+import {
+  Newspaper,
+  RefreshCw,
+  AlertTriangle,
+  PenSquare,
+  Rss,
+  Loader,
+  ExternalLink,
+} from 'lucide-react'
 
 interface NewsFeedProps {
   limit?: number
@@ -51,7 +60,6 @@ export function NewsFeed({
   useEffect(() => {
     fetchNews()
 
-    // Auto refresh setiap 5 menit
     const interval = setInterval(fetchNews, REFRESH_INTERVALS.NEWS_FEED)
     return () => clearInterval(interval)
   }, [fetchNews])
@@ -77,9 +85,12 @@ export function NewsFeed({
     return (
       <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">📰 Berita Terbaru</h2>
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <Newspaper className="w-6 h-6" />
+            Berita Terbaru
+          </h2>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+            <Loader className="w-4 h-4 animate-spin" />
             <span className="text-sm text-gray-500">Memuat...</span>
           </div>
         </div>
@@ -101,18 +112,22 @@ export function NewsFeed({
     return (
       <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">📰 Berita Terbaru</h2>
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <Newspaper className="w-6 h-6" />
+            Berita Terbaru
+          </h2>
           <button
             onClick={fetchNews}
-            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
           >
-            🔄 Coba Lagi
+            <RefreshCw className="w-3 h-3" />
+            Coba Lagi
           </button>
         </div>
 
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-center gap-2 text-red-800">
-            <span>⚠️</span>
+            <AlertTriangle className="w-5 h-5" />
             <span className="font-medium">Gagal memuat berita</span>
           </div>
           <p className="text-red-600 text-sm mt-1">{error}</p>
@@ -124,7 +139,10 @@ export function NewsFeed({
   return (
     <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">📰 Berita Terbaru</h2>
+        <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+          <Newspaper className="w-6 h-6" />
+          Berita Terbaru
+        </h2>
         <div className="flex items-center gap-3">
           <div className="text-xs text-gray-500">
             <ClientOnly>{lastUpdated && `Update: ${formatDate(lastUpdated)}`}</ClientOnly>
@@ -136,16 +154,17 @@ export function NewsFeed({
           <button
             onClick={fetchNews}
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-3 py-1 rounded text-sm transition-colors"
+            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-3 py-1 rounded text-sm transition-colors"
           >
-            🔄 Refresh
+            <RefreshCw className="w-3 h-3" />
+            Refresh
           </button>
         </div>
       </div>
 
       {news.length === 0 ? (
         <div className="text-center py-8">
-          <div className="text-4xl mb-2">📰</div>
+          <Newspaper className="w-12 h-12 mx-auto text-gray-300 mb-2" />
           <h3 className="text-lg font-medium text-gray-800 mb-1">Belum ada berita terbaru</h3>
           <p className="text-gray-600 text-sm">Coba refresh atau periksa koneksi internet Anda</p>
         </div>
@@ -177,9 +196,13 @@ export function NewsFeed({
               </p>
 
               <div className="flex items-center justify-between">
-                {item.author && <span className="text-xs text-gray-500">✍️ {item.author}</span>}
-                <span className="text-blue-600 text-sm font-medium group-hover:underline">
-                  Baca selengkapnya →
+                {item.author && (
+                  <span className="text-xs text-gray-500 flex items-center gap-1">
+                    <PenSquare className="w-3 h-3" /> {item.author}
+                  </span>
+                )}
+                <span className="text-blue-600 text-sm font-medium group-hover:underline flex items-center gap-1">
+                  Baca selengkapnya <ExternalLink className="w-3 h-3" />
                 </span>
               </div>
             </article>
@@ -188,10 +211,12 @@ export function NewsFeed({
       )}
 
       <div className="mt-6 pt-4 border-t border-gray-200">
-        <p className="text-xs text-gray-500 text-center">
-          📡 Data diambil secara real-time dari berbagai sumber berita terpercaya
-          <br />
-          🔄 Auto-refresh setiap 10 menit
+        <p className="text-xs text-gray-500 text-center flex items-center justify-center gap-2">
+          <Rss className="w-3 h-3" />
+          Data diambil secara real-time dari berbagai sumber berita terpercaya
+        </p>
+        <p className="text-xs text-gray-500 text-center mt-1">
+          Auto-refresh setiap 10 menit
         </p>
       </div>
     </div>

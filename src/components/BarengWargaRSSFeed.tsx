@@ -3,7 +3,15 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ClientOnly } from './ClientOnly'
 import { TwitterPost } from '@/types'
-import { formatDate, cleanTweetText, API_ENDPOINTS, REFRESH_INTERVALS } from '@/utils'
+import { formatDate, cleanTweetText, API_ENDPOINTS, REFRESH_INTERVALS } from '@/lib'
+import {
+  Twitter,
+  Loader,
+  AlertCircle,
+  MessageSquare,
+  Image as ImageIcon,
+  ExternalLink,
+} from 'lucide-react'
 
 interface BarengWargaFeedProps {
   limit?: number
@@ -61,7 +69,6 @@ export function BarengWargaFeed({
   useEffect(() => {
     fetchPosts()
 
-    // Auto refresh setiap 5 menit
     const interval = setInterval(fetchPosts, REFRESH_INTERVALS.TWITTER_FEED)
     return () => clearInterval(interval)
   }, [fetchPosts])
@@ -71,8 +78,11 @@ export function BarengWargaFeed({
       <div className={`space-y-4 ${className}`}>
         {showHeader && (
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">🐦 Update dari @barengwarga</h2>
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <Twitter className="w-5 h-5 text-blue-500" />
+              Update dari @barengwarga
+            </h2>
+            <Loader className="animate-spin text-blue-600 w-5 h-5" />
           </div>
         )}
         <div className="grid gap-4">
@@ -91,18 +101,15 @@ export function BarengWargaFeed({
     return (
       <div className={`space-y-4 ${className}`}>
         {showHeader && (
-          <h2 className="text-xl font-bold text-gray-900">🐦 Update dari @barengwarga</h2>
+          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <Twitter className="w-5 h-5 text-blue-500" />
+            Update dari @barengwarga
+          </h2>
         )}
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex">
             <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <AlertCircle className="h-5 w-5 text-red-400" />
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-800">Gagal memuat postingan Twitter</h3>
@@ -124,24 +131,13 @@ export function BarengWargaFeed({
     return (
       <div className={`space-y-4 ${className}`}>
         {showHeader && (
-          <h2 className="text-xl font-bold text-gray-900">🐦 Update dari @barengwarga</h2>
+          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <Twitter className="w-5 h-5 text-blue-500" />
+            Update dari @barengwarga
+          </h2>
         )}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
-          <div className="text-gray-400 mb-2">
-            <svg
-              className="mx-auto h-12 w-12"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
-            </svg>
-          </div>
+          <MessageSquare className="mx-auto h-12 w-12 text-gray-400 mb-2" />
           <p className="text-gray-500">Belum ada postingan terbaru</p>
         </div>
       </div>
@@ -153,7 +149,10 @@ export function BarengWargaFeed({
       <div className={`space-y-4 ${className}`}>
         {showHeader && (
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">🐦 Update @barengwarga</h2>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <Twitter className="w-5 h-5 text-blue-500" />
+              Update @barengwarga
+            </h2>
             {lastUpdated && (
               <span className="text-xs text-gray-500">Update: {formatDate(lastUpdated)}</span>
             )}
@@ -167,47 +166,33 @@ export function BarengWargaFeed({
               className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200"
             >
               <div className="flex items-start space-x-3">
-                {/* Twitter Icon */}
                 <div className="flex-shrink-0">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-                    </svg>
+                    <Twitter className="w-4 h-4 text-white" />
                   </div>
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  {/* Content */}
                   <div className="text-gray-900 mb-3">
                     <p className="text-sm leading-relaxed mb-3">{cleanTweetText(post.title)}</p>
 
-                    {/* Media Preview */}
                     {post.image && (
                       <div className="rounded-lg overflow-hidden border border-gray-200 mb-3">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={post.image}
                           alt="Media dari tweet"
                           className="w-full h-auto max-h-64 object-cover"
                           onError={e => {
-                            // Hide image if it fails to load
                             ;(e.target as HTMLImageElement).style.display = 'none'
                           }}
                         />
                       </div>
                     )}
 
-                    {/* Media Indicator for pic.twitter.com */}
                     {!post.image && post.hasMedia && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
                         <div className="flex items-center space-x-2 text-blue-700">
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                              fillRule="evenodd"
-                              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
+                          <ImageIcon className="w-4 h-4" />
                           <span className="text-sm font-medium">Media tersedia</span>
                         </div>
                         <p className="text-xs text-blue-600 mt-1">
@@ -217,7 +202,6 @@ export function BarengWargaFeed({
                     )}
                   </div>
 
-                  {/* Footer */}
                   <div className="flex items-center justify-between text-xs text-gray-500">
                     <div className="flex items-center space-x-2">
                       <span className="font-medium text-blue-600">@barengwarga</span>
@@ -232,19 +216,7 @@ export function BarengWargaFeed({
                       className="inline-flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors duration-200"
                     >
                       <span>Lihat di X</span>
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
+                      <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
                 </div>
@@ -253,7 +225,6 @@ export function BarengWargaFeed({
           ))}
         </div>
 
-        {/* Footer Info */}
         <div className="text-center pt-4">
           <p className="text-xs text-gray-400">RSS feed @barengwarga • Update setiap 5 menit</p>
         </div>
